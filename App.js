@@ -1,10 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import * as Location from 'expo-location'
+import { useEffect, useState } from 'react';
 
 export default function App() {
+  const [location , setLocation] = useState({})
+  const [address, setAddress] = useState()
+  const [latitude, setLatitude] = useState()
+  const [longitude, setLongitude] = useState()
+
+    useEffect(()=>{
+      const getPermission = async()=>{
+        let {status} = await Location.requestForegroundPermissionsAsync();
+        if(status !== 'granted'){
+          console.log('Please grant location permission');
+          return;
+        }
+        let currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation(currentLocation);
+        console.log('location');
+        console.log(currentLocation);
+      };
+      getPermission();
+    },[]);
+
+    const geocode = async()=>{
+      const geocodedLocation = await Location.geocodeAsync(address);
+      console.log("Geocoded Address:");
+      console.log(geocodedLocation);
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
+      console.log(latitude);
+      console.log(longitude);
+    }
+
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <TextInput placeholder = 'Address' value={address} onChangeText={setAddress}/>
+      <Button title="Geocode Address" onPress={geocode}/>
       <StatusBar style="auto" />
     </View>
   );
