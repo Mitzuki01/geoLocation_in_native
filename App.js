@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react';
 
 export default function App() {
   const [location , setLocation] = useState({})
-  const [address, setAddress] = useState()
+  const [address, setAddress] = useState("")
   const [latitude, setLatitude] = useState()
   const [longitude, setLongitude] = useState()
+  const [addressTWo , setAddressTwo ] = useState()
 
     useEffect(()=>{
       const getPermission = async()=>{
@@ -18,6 +19,7 @@ export default function App() {
         }
         let currentLocation = await Location.getCurrentPositionAsync({});
         setLocation(currentLocation);
+        setAddressTwo(currentLocation)
         console.log('location');
         console.log(currentLocation);
       };
@@ -25,19 +27,25 @@ export default function App() {
     },[]);
 
     const geocode = async()=>{
+      if(address == ""){
+        setAddress(location)
+       }//else{
+      //   setAddress(address)
+      // }
+      console.log('>>>>>>>>>>>>', address)
       const geocodedLocation = await Location.geocodeAsync(address);
       console.log("Geocoded Address:");
       console.log(geocodedLocation);
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
-      console.log(latitude);
-      console.log(longitude);
+      // setLatitude(location.coords.latitude);
+      // setLongitude(location.coords.longitude);
+      // console.log(latitude);
+      // console.log(longitude);
     }
 
 
   return (
     <View style={styles.container}>
-      <TextInput placeholder = 'Address' value={address} onChangeText={setAddress}/>
+      <TextInput placeholder = 'Address' value={address} onChangeText={setAddress}  required={true}/>
       <Button title="Geocode Address" onPress={geocode}/>
       <StatusBar style="auto" />
     </View>
