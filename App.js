@@ -27,19 +27,23 @@ export default function App() {
     },[]);
 
     const geocode = async()=>{
-      if(address == ""){
-        setAddress(location)
-       }//else{
-      //   setAddress(address)
-      // }
-      console.log('>>>>>>>>>>>>', address)
-      const geocodedLocation = await Location.geocodeAsync(address);
-      console.log("Geocoded Address:");
-      console.log(geocodedLocation);
-      // setLatitude(location.coords.latitude);
-      // setLongitude(location.coords.longitude);
-      // console.log(latitude);
-      // console.log(longitude);
+     if(address === ""){
+                setLatitude(location.coords.latitude);
+                setLongitude(location.coords.longitude);
+                console.log('>>>>>>>>>>>>>>>>>> location atual >>>>>>>>>>>>>>>>>>>>')
+                console.log('latitude atual: ',latitude);
+                console.log('longitude atual: ',longitude);
+            console.log("     ");
+           }else{
+                const geocodedLocation = await Location.geocodeAsync(address);
+                console.log('>>>>>>>>>>>>', address)
+                console.log('>>>>>>>>>>>>>>>>>> location >>>>>>>>>>>>>>>>>>>>');
+                setLatitude(geocodedLocation[0].latitude);
+                setLongitude(geocodedLocation[0].longitude);
+                console.log('latitude: ',latitude);
+                console.log('longitude: ',longitude);
+                console.log("     ");
+          }
     }
 
 
